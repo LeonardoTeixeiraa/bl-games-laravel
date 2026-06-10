@@ -1,0 +1,27 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Scroll suave para navegação interna */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll personalizado estilo Steam */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #171a21;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1b2838;
+  border-radius: 6px;
+  border: 2px solid #171a21;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ccff;
+}

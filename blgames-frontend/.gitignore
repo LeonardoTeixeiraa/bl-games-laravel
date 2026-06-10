@@ -1,0 +1,23 @@
+#dependencies
+node_modules/
+
+#production
+dist/
+
+#logs
+*.log
+
+#environment variables
+.env
+.env.local
+.env.development.local
+.env.test
+.env.production.local
+
+#editor
+.idea/
+.vscode/
+
+#OS
+.DS_Store
+Thumbs.db
