@@ -1,7 +1,7 @@
 /**
  * HERO BANNER COMPONENTE
  * Banner principal de destaque estilo Steam
- * 
+ *
  * PERSONALIZAÇÕES DISPONÍVEIS:
  * - Altere 'heroGame.backgroundImage' para mudar a imagem de fundo
  * - Modifique 'heroGame.title' para o título do jogo em destaque
@@ -9,25 +9,23 @@
  * - Customize o texto dos botões (CTA)
  * - Ajuste as cores do gradiente overlay
  */
-import heroBg from '../../img/hero-bg.jpg';
-import { Play, Plus } from 'lucide-react';
-import { Button } from './ui/button';
+import heroBg from "../../img/hero-bg.jpg";
+import { Play, Plus } from "lucide-react";
+import { Button } from "./ui/button";
 
 export function HeroBanner() {
-  
   // ÁREA DE CUSTOMIZAÇÃO: Dados do jogo em destaque
-const heroGame = {
-  title: "Homem-Aranha",
-  description: "Balance entre arranha-céus em uma Nova York vibrante e domine um sistema de combate acrobático único para salvar a cidade. Experimente a vida épica do Homem-Aranha e prove que você tem o que é preciso para ser o herói que esse mundo precisa.",
-  backgroundImage: heroBg,
-  tags: ["Ação", "Mundo Aberto", "Super-Herói"],
-  price: "R$ 199,90"
-};
+  const heroGame = {
+    title: "Homem-Aranha",
+    description:
+      "Balance entre arranha-céus em uma Nova York vibrante e domine um sistema de combate acrobático único para salvar a cidade. Experimente a vida épica do Homem-Aranha e prove que você tem o que é preciso para ser o herói que esse mundo precisa.",
+    backgroundImage: heroBg,
+    tags: ["Ação", "Mundo Aberto", "Super-Herói"],
+  };
   return (
     <section className="relative h-[600px] md:h-[700px] w-full overflow-hidden mt-16">
-      
       {/* IMAGEM DE FUNDO - Substitua 'heroGame.backgroundImage' */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroGame.backgroundImage})` }}
       >
@@ -39,7 +37,6 @@ const heroGame = {
       {/* CONTEÚDO DO HERO */}
       <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end pb-16">
         <div className="max-w-2xl space-y-6">
-          
           {/* TAGS DO JOGO */}
           <div className="flex flex-wrap gap-2">
             {heroGame.tags.map((tag) => (
@@ -62,29 +59,8 @@ const heroGame = {
             {heroGame.description}
           </p>
 
-          {/* PREÇO */}
-          <div className="flex items-center gap-4">
-            <span className="text-3xl font-bold text-[#00ccff] font-['Montserrat']">
-              {heroGame.price}
-            </span>
-            <span className="text-sm text-gray-400 line-through font-['Roboto']">
-              R$ 249,90
-            </span>
-            <span className="px-3 py-1 bg-[#ff00ff] text-white text-sm font-bold rounded-md">
-              -20%
-            </span>
-          </div>
-
           {/* BOTÕES DE AÇÃO (CTA) - Customize os textos aqui */}
           <div className="flex flex-wrap gap-4">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-[#00ccff] to-[#0099cc] hover:from-[#00b3e6] hover:to-[#007799] text-white font-bold shadow-lg shadow-[#00ccff]/50 transition-all font-['Roboto'] px-8"
-            >
-              <Play className="mr-2 h-5 w-5" />
-              Jogar Agora
-            </Button>
-            
             <Button
               size="lg"
               variant="outline"
