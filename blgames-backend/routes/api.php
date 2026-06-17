@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JogoController;
 use App\Models\Jogo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,3 +18,4 @@ Route::get('/jogos', function (Request $request) {
         return $jogo;
     });
 });
+Route::get('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
