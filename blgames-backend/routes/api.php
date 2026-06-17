@@ -19,3 +19,5 @@ Route::get('/jogos', function (Request $request) {
     });
 });
 Route::get('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
+Route::put('/jogos/{id}', [JogoController::class, 'update']); // Atualizar
+
