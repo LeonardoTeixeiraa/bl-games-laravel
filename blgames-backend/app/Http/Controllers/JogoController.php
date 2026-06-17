@@ -20,33 +20,19 @@ class JogoController
 
     public function store(Request $request)
     {
-        //validar os dados da requisição
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'plataforma' => 'required|string|max:255',
-            'genero' => 'required|string|max:255',
-            'desenvolvedora' => 'required|string|max:255',
-            'classificacao' => 'required|integer',
-            'descricao' => 'required|string',
-            'categoria_id' => 'required|integer',
-            'imagem_url' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        //instanciar novo jogo
+        $jogo = new Jogo();
 
-        ]);
+        $jogo->nome = $request->input('nome');
+        $jogo->plataforma = $request->input('plataforma');
+        $jogo->genero = $request->input('genero');
+        $jogo->desenvolvedora = $request->input('desenvolvedora');
+        $jogo->classificacao = $request->input('classificacao');
+        $jogo->descricao = $request->input('descricao');
+        $jogo->categoria_id = $request->input('categoria_id');
+        $jogo->imagem_url = $request->file('imagem_url')->store('banners', 'public');
 
-        $caminhoImagem = $request->file('imagem_url')->store('banners', 'public');
-
-        //cadasttar jogo
-        $jogo = Jogo::create([
-            'nome' => $request->input('nome'),
-            'plataforma' => $request->input('plataforma'),
-            'genero' => $request->input('genero'),
-            'desenvolvedora' => $request->input('desenvolvedora'),
-            'classificacao' => $request->input('classificacao'),
-            'descricao' => $request->input('descricao'),
-            'categoria_id' => $request->input('categoria_id'),
-            'imagem_url' => $caminhoImagem,
-        ]);
-
+        $jogo->save();
         return response()->json([
             'mensagem' => 'Jogo cadastrado com sucesso',
             'jogo' => $jogo
