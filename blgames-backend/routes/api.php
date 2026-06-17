@@ -9,5 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 //Listar todos os jogos
 Route::get('/jogos', function(Request $request){
-    return Jogo::all();
+    return Jogo::select('id', 'nome', 'plataforma', 'genero', 'desenvolvedora', 'classificacao', 'descricao', 'categoria_id', 'imagem_url')->get();
 });
+
+
