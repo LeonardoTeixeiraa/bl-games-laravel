@@ -23,4 +23,9 @@ class Jogo extends Model
     {
         return $this->belongsTo(Categoria::class);
     }
+
+    public function avaliacoes()
+    {
+        return $this->hasMany(Avaliacao::class);
+    }
 }
