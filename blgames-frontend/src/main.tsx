@@ -7,9 +7,9 @@ import axios from "axios";
 import "./styles/index.css";
 
 // Point axios to backend API during development
-// Backend dev server is running on port 8001
+// Backend dev server is running on port 8000
 axios.defaults.baseURL =
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
+  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
