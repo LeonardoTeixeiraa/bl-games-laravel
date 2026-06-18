@@ -34,10 +34,8 @@
 import { useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { HeroBanner } from "./components/HeroBanner";
-import { PlayerStats } from "./components/PlayerStats";
 import { FeaturedGames } from "./components/FeaturedGames";
 import { Categories } from "./components/Categories";
-import { Library } from "./components/Library";
 import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import AdminPage from "./components/AdminPage";
