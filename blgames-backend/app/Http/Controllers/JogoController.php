@@ -9,21 +9,24 @@ use Illuminate\Support\Facades\Storage;
 
 class JogoController
 {
-    public function buscar(){
+    public function buscar()
+    {
         $search = request('search');
 
-        if($search){
+        if ($search) {
             $jogos = Jogo::where([
-                ['nome', 'like', '%'.$search.'%']
+                ['nome', 'like', '%' . $search . '%']
             ])->get();
-        }else{
+        } else {
             $jogos = Jogo::select('id', 'nome', 'plataforma', 'genero', 'desenvolvedora', 'classificacao', 'descricao', 'categoria_id', 'imagem_url')->get();
 
-            return $jogos->map(function ($jogo) {
-            $jogo->imagem_url = asset('storage/' . $jogo->imagem_url);
-            return $jogo;
-            }
-        );}
+            return $jogos->map(
+                function ($jogo) {
+                    $jogo->imagem_url = asset('storage/' . $jogo->imagem_url);
+                    return $jogo;
+                }
+            );
+        }
         return response()->json($jogos);
     }
 
@@ -50,13 +53,9 @@ class JogoController
 
     public function update(Request $request, $id)
     {
-        $jogo = Jogo::find($id);
+        $jogo = Jogo::findOrFail($id);
 
-        if (!$jogo) {
-            return response()->json(['mensagem' => 'Jogo não encontrado.'], 404);
-        }
-
-        $dadosParaAtualizar = $request->except('imagem_url');
+        $dadosParaAtualizar = $request->all();
 
         if ($request->hasFile('imagem_url')) {
             // Apagar a imagem antiga
@@ -71,7 +70,7 @@ class JogoController
 
         return response()->json([
             'mensagem' => 'Jogo atualizado com sucesso!',
-            'jogo' => $jogo
+            'jogo' => $jogo->refresh()
         ]);
     }
 
