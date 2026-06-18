@@ -13,8 +13,19 @@ export default function Register() {
     e.preventDefault();
     setError("");
     try {
-      await axios.post("/api/register", { name, email, password });
-      navigate("/login");
+      const res = await axios.post("/api/register", { name, email, password });
+
+      // Salva o token de autenticação
+      localStorage.setItem("token", res.data.token);
+
+      // Salva os dados completos do usuário (incluindo is_admin)
+      localStorage.setItem("usuario_dados", JSON.stringify(res.data.user));
+
+      // Dispara evento customizado para Navbar atualizar
+      document.dispatchEvent(new Event("user-login"));
+
+      // Redireciona para home ao invés de login
+      window.location.href = "/";
     } catch (err: any) {
       setError(err?.response?.data?.message || "Erro ao cadastrar");
     }

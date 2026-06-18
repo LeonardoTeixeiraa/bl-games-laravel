@@ -13,7 +13,16 @@ export default function Login() {
     setError("");
     try {
       const res = await axios.post("/api/login", { email, password });
+
+      // Salva o token de autenticação
       localStorage.setItem("token", res.data.token);
+
+      // Salva os dados completos do usuário (incluindo is_admin)
+      localStorage.setItem("usuario_dados", JSON.stringify(res.data.user));
+
+      // Dispara evento customizado para Navbar atualizar
+      document.dispatchEvent(new Event("user-login"));
+
       navigate("/");
     } catch (err: any) {
       setError(err?.response?.data?.message || "Erro ao efetuar login");
