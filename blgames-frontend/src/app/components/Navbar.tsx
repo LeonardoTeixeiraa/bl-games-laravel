@@ -69,7 +69,7 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               className="rounded-full bg-[#1b2838] hover:bg-[#00ccff]/20 border border-[#00ccff]/30 transition-all"
-              onClick={() => {}}
+              onClick={() => (window.location.href = "/login")}
             >
               <User className="h-5 w-5 text-[#00ccff]" />
             </Button>

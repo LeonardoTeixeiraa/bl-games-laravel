@@ -82,7 +82,9 @@ export default function AdminPage() {
 
     try {
       if (editing) {
-        await axios.put(`http://localhost:8000/api/jogos/${editing.id}`, fd, {
+        fd.append("_method", "PUT");
+
+        await axios.post(`http://localhost:8000/api/jogos/${editing.id}`, fd, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Jogo atualizado com sucesso");
