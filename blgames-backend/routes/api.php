@@ -30,6 +30,11 @@ Route::get('/jogos', function (Request $request) {
         return $jogo;
     });
 });
-Route::post('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
-Route::put('/jogos/{id}', [JogoController::class, 'update']); // Atualizar
-Route::delete('/jogos/{id}', [JogoController::class, 'destroy']); // Apagar
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']); // Login
+Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']); // Register
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
+    Route::put('/jogos/{id}', [JogoController::class, 'update']); // Atualizar
+    Route::delete('/jogos/{id}', [JogoController::class, 'destroy']); // Apagar
+});

@@ -6,7 +6,6 @@ use App\Models\Jogo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-
 class JogoController
 {
     public function buscar()
