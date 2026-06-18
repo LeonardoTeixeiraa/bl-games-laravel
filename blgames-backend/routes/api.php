@@ -9,15 +9,27 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-//Listar todos os jogos
+//Listar todos os jogos (suporta busca via ?termo=palavra)
 Route::get('/jogos', function (Request $request) {
-    $jogos = Jogo::select('id', 'nome', 'plataforma', 'genero', 'desenvolvedora', 'classificacao', 'descricao', 'categoria_id', 'imagem_url')->get();
+    $termo = $request->input('termo');
+
+    $query = Jogo::select('id', 'nome', 'plataforma', 'genero', 'desenvolvedora', 'classificacao', 'descricao', 'categoria_id', 'imagem_url');
+
+    if ($termo) {
+        $query->where(function ($q) use ($termo) {
+            $q->where('nome', 'like', "%{$termo}%")
+                ->orWhere('genero', 'like', "%{$termo}%")
+                ->orWhere('desenvolvedora', 'like', "%{$termo}%");
+        });
+    }
+
+    $jogos = $query->get();
 
     return $jogos->map(function ($jogo) {
         $jogo->imagem_url = asset('storage/' . $jogo->imagem_url);
         return $jogo;
     });
 });
-Route::get('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
+Route::post('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
 Route::put('/jogos/{id}', [JogoController::class, 'update']); // Atualizar
 Route::delete('/jogos/{id}', [JogoController::class, 'destroy']); // Apagar

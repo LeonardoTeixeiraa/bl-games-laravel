@@ -6,17 +6,26 @@ use App\Models\Jogo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
 class JogoController
 {
-    // public function buscar(Request $request){
-    //     $termo = $request->input('termo');
+    public function buscar(){
+        $search = request('search');
 
-    //     if(!$termo){
-    //         return response()->json([]);
-    //     }
+        if($search){
+            $jogos = Jogo::where([
+                ['nome', 'like', '%'.$search.'%']
+            ])->get();
+        }else{
+            $jogos = Jogo::select('id', 'nome', 'plataforma', 'genero', 'desenvolvedora', 'classificacao', 'descricao', 'categoria_id', 'imagem_url')->get();
 
-    //     $jogos = 
-    // }
+            return $jogos->map(function ($jogo) {
+            $jogo->imagem_url = asset('storage/' . $jogo->imagem_url);
+            return $jogo;
+            }
+        );}
+        return response()->json($jogos);
+    }
 
     public function store(Request $request)
     {
@@ -47,15 +56,15 @@ class JogoController
             return response()->json(['mensagem' => 'Jogo não encontrado.'], 404);
         }
 
-        $dadosParaAtualizar = $request->except('banner');
+        $dadosParaAtualizar = $request->except('imagem_url');
 
-        if ($request->hasFile('banner')) {
+        if ($request->hasFile('imagem_url')) {
             // Apagar a imagem antiga
             if ($jogo->imagem_url) {
                 Storage::disk('public')->delete($jogo->imagem_url);
             }
-            // salvar imagemn nova
-            $dadosParaAtualizar['imagem_url'] = $request->file('banner')->store('banners', 'public');
+            // salvar imagem nova
+            $dadosParaAtualizar['imagem_url'] = $request->file('imagem_url')->store('banners', 'public');
         }
 
         $jogo->update($dadosParaAtualizar);
