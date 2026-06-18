@@ -12,7 +12,6 @@ import { useState } from "react";
 import React from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Link } from "react-router-dom";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -83,9 +82,10 @@ export function Navbar() {
   }, []);
 
   // ÁREA DE CUSTOMIZAÇÃO: Adicione ou remova links de navegação aqui
+  // Usar '/#...' garante navegação para a página principal antes de rolar para a seção
   const navLinks = [
-    { name: "Destaques", href: "#destaques" },
-    { name: "Categorias", href: "#categorias" },
+    { name: "Destaques", href: "/#destaques" },
+    { name: "Categorias", href: "/#categorias" },
   ];
 
   // Normaliza diferentes formatos possíveis de `is_admin` ('1', 1, true)
@@ -120,13 +120,24 @@ export function Navbar() {
             {/* LINKS DE NAVEGAÇÃO DESKTOP */}
             <div className="hidden md:flex items-center gap-6">
               {linksToRender.map((link) => (
-                <Link
+                <a
                   key={link.name}
-                  to={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (typeof window === 'undefined') return;
+                    // If we're not on the homepage, allow normal navigation to '/#section'
+                    if (window.location.pathname !== '/') return;
+                    // If already on homepage, prevent full navigation and smoothly scroll
+                    e.preventDefault();
+                    const targetId = link.href.replace('/#', '');
+                    const el = document.getElementById(targetId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else window.location.hash = `#${targetId}`;
+                  }}
                   className="text-gray-300 hover:text-[#00ccff] transition-colors font-['Roboto'] font-medium"
                 >
                   {link.name}
-                </Link>
+                </a>
               ))}
             </div>
 

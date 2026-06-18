@@ -21,7 +21,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Star, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { Card } from "./ui/card";
 
 export function FeaturedGames() {
@@ -58,6 +58,10 @@ export function FeaturedGames() {
           title: g.nome,
           image: g.imagem_url,
           category: g.genero,
+          desenvolvedora: g.desenvolvedora,
+          plataforma: g.plataforma,
+          classificacao: g.classificacao,
+          descricao: g.descricao,
           price: null,
           discount: 0,
           rating: g.avaliacao ?? 0,
@@ -147,21 +151,24 @@ export function FeaturedGames() {
                   {game.title}
                 </h3>
 
-                {/* RATING */}
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-[#00ccff] text-[#00ccff]" />
-                    <span className="text-sm font-bold text-[#00ccff] font-['Roboto']">
-                      {game.rating}%
-                    </span>
-                  </div>
-                  <span className="text-xs text-gray-400 font-['Roboto']">
-                    Muito Positivo
-                  </span>
+                {/* Desenvolvedora */}
+                <div className="text-sm text-gray-300 font-['Roboto']">
+                  Desenvolvedora: <span className="text-[#00ccff] font-medium">{game.desenvolvedora || '—'}</span>
                 </div>
 
-                {/* separador visual entre título/rating e conteúdo final */}
+                {/* separador visual entre título e conteúdo final */}
                 <div className="pt-2 border-t border-[#00ccff]/10" />
+
+                {/* Saiba mais button */}
+                <div className="pt-3">
+                  <button
+                    onClick={() => (window.location.href = `/jogo/${game.id}`)}
+                    className="bg-[#00ccff] text-black px-4 py-2 rounded font-medium hover:brightness-95 transition"
+                    aria-label={`Saiba mais sobre ${game.title}`}
+                  >
+                    Saiba mais
+                  </button>
+                </div>
               </div>
 
               {/* GLOW EFFECT NO HOVER */}

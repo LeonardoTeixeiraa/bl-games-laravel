@@ -39,6 +39,7 @@ import { Categories } from "./components/Categories";
 import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import AdminPage from "./components/AdminPage";
+import GameDetail from "./components/GameDetail";
 
 export default function App() {
   // Ativa o modo dark ao carregar
@@ -50,6 +51,8 @@ export default function App() {
     <div className="min-h-screen bg-[#171a21] font-['Roboto']">
       {window.location.pathname === "/admin" ? (
         <AdminPage />
+      ) : window.location.pathname.startsWith('/jogo/') || window.location.pathname.startsWith('/game/') ? (
+        <GameDetail />
       ) : (
         <>
           {/* 
