@@ -75,25 +75,8 @@ export function Navbar() {
               size="icon"
               className="rounded-full bg-[#1b2838] hover:bg-[#00ccff]/20 border border-[#00ccff]/30 transition-all"
               onClick={() => {
-                const isAdmin = localStorage.getItem("admin") === "true";
-
-                if (isAdmin) {
-                  if (confirm("Deseja deslogar do painel admin?")) {
-                    localStorage.removeItem("admin");
-                    window.location.reload();
-                  }
-                  return;
-                }
-
-                const senha = prompt("Digite a senha de administrador");
-
-                if (senha === "123456") {
-                  localStorage.setItem("admin", "true");
-                  window.location.reload();
-                } else if (senha) {
-                  alert("Senha incorreta!");
-                }
-              }}
+                
+            }}
             >
               <User className="h-5 w-5 text-[#00ccff]" />
             </Button>
