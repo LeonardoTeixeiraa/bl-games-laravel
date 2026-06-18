@@ -14,12 +14,13 @@ import { Input } from "./ui/input";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // ÁREA DE CUSTOMIZAÇÃO: Adicione ou remova links de navegação aqui
   const navLinks = [
     { name: "Destaques", href: "#destaques" },
     { name: "Categorias", href: "#categorias" },
-    { name: "Comunidade", href: "#comunidade" },
+    { name: "Admin", href: "/admin" },
   ];
 
   return (
@@ -45,15 +46,6 @@ export function Navbar() {
                   {link.name}
                 </a>
               ))}
-              {typeof window !== "undefined" &&
-                localStorage.getItem("admin") === "true" && (
-                  <a
-                    href="/admin"
-                    className="text-gray-300 hover:text-[#00ccff] transition-colors font-['Roboto'] font-medium"
-                  >
-                    Admin
-                  </a>
-                )}
             </div>
           </div>
 
@@ -62,11 +54,14 @@ export function Navbar() {
             {/* BUSCA - Desktop */}
             <div className="hidden sm:flex items-center bg-[#1b2838] rounded-md px-3 py-2 w-64 border border-[#00ccff]/20 focus-within:border-[#00ccff]/60 transition-colors">
               <Search className="h-4 w-4 text-gray-400 mr-2" />
-              <Input
-                type="search"
-                placeholder="Buscar jogos..."
-                className="bg-transparent border-0 text-sm text-gray-300 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 font-['Roboto']"
-              />
+              <form action="/" method="GET">
+                <Input
+                  type="text"
+                  name="search"
+                  placeholder="Buscar jogos..."
+                  className="bg-transparent border-0 text-sm text-gray-300 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 font-['Roboto']"
+                />
+              </form>
             </div>
 
             {/* ÍCONE DE USUÁRIO */}
@@ -74,9 +69,7 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               className="rounded-full bg-[#1b2838] hover:bg-[#00ccff]/20 border border-[#00ccff]/30 transition-all"
-              onClick={() => {
-                
-            }}
+              onClick={() => {}}
             >
               <User className="h-5 w-5 text-[#00ccff]" />
             </Button>
@@ -115,11 +108,14 @@ export function Navbar() {
             <div className="px-3 pt-2">
               <div className="flex items-center bg-[#1b2838] rounded-md px-3 py-2 border border-[#00ccff]/20">
                 <Search className="h-4 w-4 text-gray-400 mr-2" />
-                <Input
-                  type="search"
-                  placeholder="Buscar jogos..."
-                  className="bg-transparent border-0 text-sm text-gray-300 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 font-['Roboto']"
-                />
+                <form action="/" method="GET">
+                  <Input
+                    type="text"
+                    name="search"
+                    placeholder="Buscar jogos..."
+                    className="bg-transparent border-0 text-sm text-gray-300 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 font-['Roboto']"
+                  />
+                </form>
               </div>
             </div>
           </div>

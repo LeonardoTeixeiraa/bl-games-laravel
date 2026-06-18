@@ -23,7 +23,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Star, TrendingUp } from "lucide-react";
 import { Card } from "./ui/card";
-import { AdminPanel } from "./AdminPanel";
 
 export function FeaturedGames() {
   const [featuredGames, setFeaturedGames] = useState<any[]>(() => {
@@ -35,15 +34,22 @@ export function FeaturedGames() {
   const isAdmin =
     typeof window !== "undefined" && localStorage.getItem("admin") === "true";
 
+  const [searchTerm, setSearchTerm] = useState<string>(() => {
+    if (typeof window === "undefined") return "";
+    const params = new URLSearchParams(window.location.search);
+    return params.get("search") || "";
+  });
+
   const saveGames = (games: any[]) => {
     setFeaturedGames(games);
     localStorage.setItem("games", JSON.stringify(games));
   };
-  // Buscar jogos do backend ao montar o componente
+  // Buscar jogos do backend quando montar e quando searchTerm mudar
   useEffect(() => {
     let mounted = true;
+    const params = searchTerm ? `?termo=${encodeURIComponent(searchTerm)}` : "";
     axios
-      .get("http://localhost:8000/api/jogos")
+      .get(`http://localhost:8000/api/jogos${params}`)
       .then((res) => {
         if (!mounted) return;
         const data = Array.isArray(res.data) ? res.data : res.data.data || [];
@@ -65,23 +71,38 @@ export function FeaturedGames() {
           typeof window !== "undefined" ? localStorage.getItem("games") : null;
         if (saved) setFeaturedGames(JSON.parse(saved));
       });
+
     return () => {
       mounted = false;
     };
+  }, [searchTerm]);
+
+  // Ouvir eventos de busca disparados pelo Navbar
+  useEffect(() => {
+    const handler = (e: any) => {
+      const term = e?.detail ?? "";
+      setSearchTerm(term || "");
+    };
+    window.addEventListener("app:search", handler as EventListener);
+    return () =>
+      window.removeEventListener("app:search", handler as EventListener);
   }, []);
 
   return (
     <section id="destaques" className="py-16 bg-[#171a21]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {isAdmin && <AdminPanel games={featuredGames} setGames={saveGames} />}
         {/* TÍTULO DA SEÇÃO */}
         <div className="flex items-center justify-between mb-10">
           <div>
             <h2 className="text-4xl font-bold text-white font-['Montserrat'] mb-2">
-              Jogos em Destaque
+              {searchTerm
+                ? `Resultados para "${searchTerm}"`
+                : "Jogos em Destaque"}
             </h2>
             <p className="text-gray-400 font-['Roboto']">
-              Ofertas especiais e lançamentos exclusivos
+              {searchTerm
+                ? `Mostrando resultados para "${searchTerm}"`
+                : "Ofertas especiais e lançamentos exclusivos"}
             </p>
           </div>
           <TrendingUp className="h-10 w-10 text-[#00ccff]" />
