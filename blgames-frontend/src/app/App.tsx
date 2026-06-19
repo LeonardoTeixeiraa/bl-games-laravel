@@ -91,7 +91,7 @@ export default function App() {
         Cards com ícones animados e contadores
         Customizável em /src/app/components/Categories.tsx
       */}
-          <Categories />
+          {/* <Categories /> */}
 
           {/* 
         BIBLIOTECA PESSOAL

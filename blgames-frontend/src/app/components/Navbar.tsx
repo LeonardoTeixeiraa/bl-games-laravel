@@ -22,29 +22,15 @@ export function Navbar() {
   React.useEffect(() => {
     const loadUsuarioData = () => {
       if (typeof window !== "undefined") {
-        // Tenta diferentes variações possíveis da chave
         let storedUsuarioDados =
           localStorage.getItem("usuario_dados") ||
           localStorage.getItem("usuario") ||
           localStorage.getItem("auth_user") ||
           localStorage.getItem("user");
 
-        console.log(
-          "[Navbar] Buscando usuario_dados. Chaves no localStorage:",
-          Object.keys(localStorage),
-        );
-        console.log("[Navbar] usuario_dados encontrado:", storedUsuarioDados);
-
         if (storedUsuarioDados) {
           try {
             const dados = JSON.parse(storedUsuarioDados);
-            console.log("[Navbar] Dados parseados:", dados);
-            console.log(
-              "[Navbar] is_admin value:",
-              dados.is_admin,
-              "type:",
-              typeof dados.is_admin,
-            );
             setUsuarioLogado(dados);
           } catch (e) {
             console.error("Erro ao parsear usuario_dados:", e);
@@ -58,7 +44,6 @@ export function Navbar() {
 
     // Escuta mudanças no localStorage
     const handleStorageChange = (e: StorageEvent) => {
-      console.log("[Navbar] Storage mudou:", e.key);
       if (
         e.key === "usuario_dados" ||
         e.key === "usuario" ||
@@ -84,8 +69,7 @@ export function Navbar() {
   // ÁREA DE CUSTOMIZAÇÃO: Adicione ou remova links de navegação aqui
   // Usar '/#...' garante navegação para a página principal antes de rolar para a seção
   const navLinks = [
-    { name: "Destaques", href: "/#destaques" },
-    { name: "Categorias", href: "/#categorias" },
+    { name: "Destaques", href: "/#destaques", isAdmin: false },
   ];
 
   // Normaliza diferentes formatos possíveis de `is_admin` ('1', 1, true)
@@ -98,12 +82,8 @@ export function Navbar() {
   // Gera a lista final de links (inclui Admin apenas para admins)
   const linksToRender = [...navLinks];
   if (eAdmin) {
-    linksToRender.push({ name: "Admin", href: "/admin" });
+    linksToRender.push({ name: "Admin", href: "/admin", isAdmin: true });
   }
-
-  console.log("[Navbar] usuarioLogado:", usuarioLogado);
-  console.log("[Navbar] eAdmin:", eAdmin);
-  console.log("[Navbar] linksToRender length:", linksToRender?.length);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#171a21] border-b border-[#00ccff]/20 backdrop-blur-sm">
@@ -125,9 +105,15 @@ export function Navbar() {
                   href={link.href}
                   onClick={(e) => {
                     if (typeof window === 'undefined') return;
-                    // If we're not on the homepage, allow normal navigation to '/#section'
+                    
+                    // Se for link de admin, navega diretamente
+                    if (link.isAdmin) {
+                      window.location.href = link.href;
+                      return;
+                    }
+                    
+                    // Se for link de seção (/#...)
                     if (window.location.pathname !== '/') return;
-                    // If already on homepage, prevent full navigation and smoothly scroll
                     e.preventDefault();
                     const targetId = link.href.replace('/#', '');
                     const el = document.getElementById(targetId);

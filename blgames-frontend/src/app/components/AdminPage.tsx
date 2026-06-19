@@ -20,6 +20,24 @@ export default function AdminPage() {
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // Função para obter headers com autenticação
+  const getAuthHeaders = () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    return {
+      Authorization: token ? `Bearer ${token}` : "",
+      "Content-Type": "application/json",
+    };
+  };
+
+  // Função para obter headers com multipart (para upload de imagem)
+  const getMultipartHeaders = () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    return {
+      Authorization: token ? `Bearer ${token}` : "",
+      "Content-Type": "multipart/form-data",
+    };
+  };
+
   useEffect(() => {
     load();
   }, []);
@@ -30,7 +48,8 @@ export default function AdminPage() {
       const res = await axios.get("http://localhost:8000/api/jogos");
       setGames(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao carregar jogos:", err);
+      alert("Erro ao carregar jogos");
     } finally {
       setLoading(false);
     }
@@ -39,11 +58,14 @@ export default function AdminPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Deseja realmente excluir este jogo?")) return;
     try {
-      await axios.delete(`http://localhost:8000/api/jogos/${id}`);
+      await axios.delete(`http://localhost:8000/api/jogos/${id}`, {
+        headers: getAuthHeaders(),
+      });
       setGames(games.filter((g) => g.id !== id));
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao excluir jogo");
+      alert("Jogo excluído com sucesso");
+    } catch (err: any) {
+      console.error("Erro ao excluir:", err);
+      alert(err?.response?.data?.message || "Erro ao excluir jogo");
     }
   };
 
@@ -70,6 +92,13 @@ export default function AdminPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validação básica
+    if (!form.nome.trim()) {
+      alert("Nome do jogo é obrigatório");
+      return;
+    }
+
     const fd = new FormData();
     fd.append("nome", form.nome);
     fd.append("plataforma", form.plataforma);
@@ -77,23 +106,34 @@ export default function AdminPage() {
     fd.append("desenvolvedora", form.desenvolvedora);
     fd.append("classificacao", form.classificacao);
     fd.append("descricao", form.descricao);
-    fd.append("categoria_id", form.categoria_id);
-    if (form.imagem_file) fd.append("imagem_url", form.imagem_file);
+    fd.append("categoria_id", form.categoria_id || "1");
+    if (form.imagem_file) {
+      fd.append("imagem_url", form.imagem_file);
+    }
 
     try {
-      if (editing) {
-        fd.append("_method", "PUT");
+      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+      const headers = {
+        Authorization: token ? `Bearer ${token}` : "",
+        "Content-Type": "multipart/form-data",
+      };
 
+      if (editing) {
+        // Editar - usar PUT com _method trick
+        fd.append("_method", "PUT");
         await axios.post(`http://localhost:8000/api/jogos/${editing.id}`, fd, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers,
         });
         alert("Jogo atualizado com sucesso");
       } else {
+        // Criar - usar POST normal
         await axios.post("http://localhost:8000/api/jogos", fd, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers,
         });
         alert("Jogo criado com sucesso");
       }
+
+      // Limpar formulário
       setForm({
         nome: "",
         plataforma: "",
@@ -105,10 +145,11 @@ export default function AdminPage() {
         imagem_file: null,
       });
       setEditing(null);
-      load();
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao salvar jogo");
+      setImagePreview(null);
+      await load();
+    } catch (err: any) {
+      console.error("Erro ao salvar:", err);
+      alert(err?.response?.data?.message || "Erro ao salvar jogo");
     }
   };
 

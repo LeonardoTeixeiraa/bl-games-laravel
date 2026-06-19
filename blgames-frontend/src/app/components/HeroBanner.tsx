@@ -10,8 +10,6 @@
  * - Ajuste as cores do gradiente overlay
  */
 import heroBg from "../../img/hero-bg.jpg";
-import { Play, Plus } from "lucide-react";
-import { Button } from "./ui/button";
 
 export function HeroBanner() {
   // ÁREA DE CUSTOMIZAÇÃO: Dados do jogo em destaque
@@ -59,17 +57,6 @@ export function HeroBanner() {
             {heroGame.description}
           </p>
 
-          {/* BOTÕES DE AÇÃO (CTA) - Customize os textos aqui */}
-          <div className="flex flex-wrap gap-4">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-[#00ccff] text-[#00ccff] hover:bg-[#00ccff]/10 font-bold font-['Roboto'] px-8"
-            >
-              <Plus className="mr-2 h-5 w-5" />
-              Adicionar à Biblioteca
-            </Button>
-          </div>
         </div>
       </div>
 
