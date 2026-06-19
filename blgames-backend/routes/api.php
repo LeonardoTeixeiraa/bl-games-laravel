@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JogoController;
+use App\Http\Controllers\AvaliacaoController;
 use App\Models\Jogo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,4 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/jogos', [JogoController::class, 'store']); // Cadastrar um jogo
     Route::put('/jogos/{id}', [JogoController::class, 'update']); // Atualizar
     Route::delete('/jogos/{id}', [JogoController::class, 'destroy']); // Apagar
+    // Rotas para atualizar e deletar comentários (apenas pelo autor)
+    Route::put('/avaliacoes/{id}', [AvaliacaoController::class, 'update']);
+    Route::delete('/avaliacoes/{id}', [AvaliacaoController::class, 'destroy']);
 });
