@@ -6,10 +6,9 @@ import Register from "./app/components/Auth/Register";
 import axios from "axios";
 import "./styles/index.css";
 
-// Point axios to backend API during development
-// Backend dev server is running on port 8000
+// Use the same origin in production; optionally override during development.
 axios.defaults.baseURL =
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+  import.meta.env.VITE_API_URL || "";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

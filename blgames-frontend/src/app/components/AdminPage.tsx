@@ -45,7 +45,7 @@ export default function AdminPage() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:8000/api/jogos");
+      const res = await axios.get("/api/jogos");
       setGames(res.data);
     } catch (err) {
       console.error("Erro ao carregar jogos:", err);
@@ -58,7 +58,7 @@ export default function AdminPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Deseja realmente excluir este jogo?")) return;
     try {
-      await axios.delete(`http://localhost:8000/api/jogos/${id}`, {
+      await axios.delete(`/api/jogos/${id}`, {
         headers: getAuthHeaders(),
       });
       setGames(games.filter((g) => g.id !== id));
@@ -121,13 +121,13 @@ export default function AdminPage() {
       if (editing) {
         // Editar - usar PUT com _method trick
         fd.append("_method", "PUT");
-        await axios.post(`http://localhost:8000/api/jogos/${editing.id}`, fd, {
+        await axios.post(`/api/jogos/${editing.id}`, fd, {
           headers,
         });
         alert("Jogo atualizado com sucesso");
       } else {
         // Criar - usar POST normal
-        await axios.post("http://localhost:8000/api/jogos", fd, {
+        await axios.post("/api/jogos", fd, {
           headers,
         });
         alert("Jogo criado com sucesso");

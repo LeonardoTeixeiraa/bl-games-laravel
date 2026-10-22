@@ -1,0 +1,14 @@
+**/.env
+**/.env.*
+**/node_modules
+**/vendor
+**/dist
+.git
+.agents
+.aws
+.codex
+**/storage/logs/*
+**/storage/framework/*
+**/storage/app/*
+**/bootstrap/cache/*.php
+backups

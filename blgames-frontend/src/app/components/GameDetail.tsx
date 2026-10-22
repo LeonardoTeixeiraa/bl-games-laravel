@@ -18,7 +18,7 @@ export default function GameDetail() {
 
     // Buscar lista de jogos e encontrar pelo id (API não possui rota /jogos/{id})
     axios
-      .get("http://localhost:8000/api/jogos")
+      .get("/api/jogos")
       .then((res) => {
         const data = Array.isArray(res.data) ? res.data : res.data.data || [];
         const found = data.find((g: any) => String(g.id) === String(id));
@@ -77,7 +77,7 @@ export default function GameDetail() {
     if (c.avaliacao_id && token) {
       try {
         await axios.delete(
-          `http://localhost:8000/api/avaliacoes/${c.avaliacao_id}`,
+          `/api/avaliacoes/${c.avaliacao_id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -117,7 +117,7 @@ export default function GameDetail() {
     if (c.avaliacao_id && token) {
       try {
         await axios.put(
-          `http://localhost:8000/api/avaliacoes/${c.avaliacao_id}`,
+          `/api/avaliacoes/${c.avaliacao_id}`,
           { comentario: editingText },
           {
             headers: { Authorization: `Bearer ${token}` },

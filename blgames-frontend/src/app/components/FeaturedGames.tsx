@@ -49,7 +49,7 @@ export function FeaturedGames() {
     let mounted = true;
     const params = searchTerm ? `?termo=${encodeURIComponent(searchTerm)}` : "";
     axios
-      .get(`http://localhost:8000/api/jogos${params}`)
+      .get(`/api/jogos${params}`)
       .then((res) => {
         if (!mounted) return;
         const data = Array.isArray(res.data) ? res.data : res.data.data || [];
